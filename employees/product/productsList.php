@@ -32,10 +32,10 @@
 
           <tr>
             <td></td>
-            <td><?php echo $rows['productType'];?></td>
-            <td><?php echo $rows['productName'];?></td>
-            <td><?php echo $rows['sellingPrice'];?></td>
-            <td><?php echo $rows['availability'];?></td>
+            <td><?php echo $rows['productType']; ?></td>
+            <td><?php echo $rows['productName']; ?></td>
+            <td><?php echo $rows['sellingPrice']; ?></td>
+            <td><?php echo $rows['availability']; ?></td>
             <td>
               <a href="updateProduct.php?id=<?php echo $rows['productID']; ?>" class="btn btn-success">Edit</a></td>
           </tr>
