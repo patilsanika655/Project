@@ -3,6 +3,7 @@ include 'connect.php';
 
 $products = $_GET['product'];
 $productSelect = unserialize($products);
+
 ?>
 
 <head>
@@ -44,7 +45,7 @@ $productSelect = unserialize($products);
         <tr style="text-align: right">
           <td colspan="3" >
           <button class="btn btn-primary" type="submit" name="placeOrder" id="placeOrder"
-          >Place Order</button>          
+          >Next</button>          
           </td>
         </tr>
     </tbody>
@@ -63,7 +64,13 @@ $productSelect = unserialize($products);
   $lastquery = "SELECT orderID FROM orders ORDER BY orderID DESC LIMIT 1";
   $last=mysqli_query($con,$lastquery);
   $lastRecord = $last->fetch_assoc();
-  $orderId = $lastRecord['orderID'];
+  if($lastRecord){
+    $orderId = $lastRecord['orderID'];
+  }
+  else {
+    $orderId = 1;
+  }
+ 
 
   for($i = 0 ; $i < sizeof($productSelect); $i++){
 
@@ -74,7 +81,7 @@ $productSelect = unserialize($products);
     $price[$i] = $rows['sellingPrice'] * $quantity[$i];
     $total = $total + $price[$i];
 
-    $insertDetails = "INSERT INTO orderDetails (productID , quantity , price) VALUES ( $productSelect[$i] , $quantity[$i] , $price[$i])";
+    $insertDetails = "INSERT INTO orderDetails (orderID , productID , quantity , price) VALUES ( $orderId , $productSelect[$i] , $quantity[$i] , $price[$i])";
 
     $con->query($insertDetails);
   }
@@ -143,8 +150,8 @@ $productSelect = unserialize($products);
         <tr style="text-align: right">
           <td colspan="4" >
             <form method="POST">
-          <button class="btn btn-primary" type="submit" name="confirm" id="confirm"
-          >Confirm</button></form>       
+          <input class="btn btn-primary" type="submit" name="confirm" id="confirm"
+          value = "Confirm"></form>       
           </td>
         </tr>
     </tbody>
@@ -152,10 +159,17 @@ $productSelect = unserialize($products);
 </div> 
 </div>
 </section>
-<?php
 
+<script>
+function Redirect(){
+        const url = "orderlist.php" ;
+        window.location.href = url;
+    };
+</script>
+
+<?php
 if(isset($_POST['confirm'])){
-  header("location : selectProduct.php");
+  echo "<script type='text/javascript'>Redirect();</script>" ;
 }
 ?>
 
